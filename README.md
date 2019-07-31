@@ -9,6 +9,7 @@ bash/insert.sh (exercise 3)
 python/wordcount.py (exercise 4)
 python/github.py (exercise 5)
 
+All scripts were created and tested on a Linux system. sed functionality may not work as intended on macOS due to differences in the tool on that platform.
 
 ## Installation
 
