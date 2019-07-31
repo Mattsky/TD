@@ -3,6 +3,7 @@
 # If not, try 'pip3 install requests'
 
 import os
+import sys
 import requests
 import json
 from collections import Counter
@@ -14,8 +15,12 @@ github_uri = "https://api.github.com/repos/teradici/deploy/contributors"
 github_uri2 = "https://api.github.com/repos/teradici/deploy/commits"
 
 # Get contributor data for the repo
-r = requests.get(github_uri)
-json_output = json.loads(r.text)
+try:
+    r = requests.get(github_uri)
+    json_output = json.loads(r.text)
+except:
+    print("WARNING: contributors request failed! Exiting.")
+    sys.exit(1)
 
 
 # Init vars for most prolific author
@@ -36,8 +41,12 @@ print("Most prolific author: {0} - number of commits: {1}".format(most_prolific_
 
 
 # Get commits between set dates, inclusive
-r2 = requests.get(github_uri2, params=date_settings)
-json_output2 = json.loads(r2.text)
+try:
+    r2 = requests.get(github_uri2, params=date_settings)
+    json_output2 = json.loads(r2.text)
+except:
+    print("WARNING: date range commits request failed! Exiting.")
+    sys.exit(1)
 
 # Grab unique datestamps for commits
 c2 = Counter(commit['commit']['author']['date'] for commit in json_output2)
