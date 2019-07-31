@@ -10,12 +10,24 @@ echo $PORT_RANGE
 command -v nc
 nc_check=$?
 
-if [[ "$nc_check" != "0" ]]; then
+command -v netcat
+netcat_check=$?
+
+if [[ "$nc_check" == "0" ]]; then
+    NC_CMD="nc"
+fi
+
+if [[ "$nc_check" != "0" && "$netcat_check" == "0" ]]; then
+    NC_CMD="netcat"
+fi
+
+if [[ "$nc_check" != "0" && "$netcat_check" != "0" ]]; then
     echo "WARNING: netcat not found. Aborting."
     exit 1
 fi
 
 # Check remote host?
+
 
 # Check port is numerical if only one is specified
 if [[ $PORT_RANGE != *"-"* ]]; then
@@ -75,4 +87,4 @@ fi
 
 
 # Actually perform the scan
-netcat -v -z -n $REMOTE_HOST $PORT_RANGE > output.txt 2>&1
+$NC_CMD -v -z -n $REMOTE_HOST $PORT_RANGE > output.txt 2>&1

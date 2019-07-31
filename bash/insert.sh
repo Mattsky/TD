@@ -6,6 +6,10 @@ INSERT_STRING=$1
 LINE_NUMBER=$2
 FILENAME=$3
 
+# Function to actually do the work
+function insertString() {
+    awk -i inplace "(NR-1)%$LINE_NUMBER==0{print \"$INSERT_STRING\"} 1" $FILENAME 
+}
 
 # Basic var check
 if [[ $INSERT_STRING == "" ]]; then
@@ -29,6 +33,5 @@ if ! [[ -f "$FILENAME" ]]; then
     exit 1
 fi
 
-
-# Awk!
-awk -i inplace "(NR-1)%$LINE_NUMBER==0{print \"$INSERT_STRING\"} 1" $FILENAME 
+# If all checks pass, try to run the function
+insertString "$INSERT_STRING" "$LINE_NUMBER" "$FILENAME"
